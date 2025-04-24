@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"stdlib.h": "c",
+			"freertos.h": "c",
+			"portable.h": "c",
+			"portmacro.h": "c"
+		}
+	}
+}
