@@ -1,2 +1,2 @@
-# my_freertos-from_scratch
+# my_freertos_from_scratch
 从0编写FreeRTOS内核（基于野火的教程）
