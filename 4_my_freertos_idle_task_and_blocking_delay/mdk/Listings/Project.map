@@ -4,9 +4,9 @@ Component: ARM Compiler 5.06 update 7 (build 960) Tool: armlink [4d3601]
 
 Section Cross References
 
-    main.o(i.Task1_Entry) refers to main.o(i.delay) for delay
+    main.o(i.Task1_Entry) refers to task.o(i.vTaskDelay) for vTaskDelay
     main.o(i.Task1_Entry) refers to main.o(.data) for flag1
-    main.o(i.Task2_Entry) refers to main.o(i.delay) for delay
+    main.o(i.Task2_Entry) refers to task.o(i.vTaskDelay) for vTaskDelay
     main.o(i.Task2_Entry) refers to main.o(.data) for flag2
     main.o(i.main) refers to task.o(i.prvInitialiseTaskLists) for prvInitialiseTaskLists
     main.o(i.main) refers to task.o(i.xTaskCreateStatic) for xTaskCreateStatic
@@ -20,9 +20,11 @@ Section Cross References
     main.o(i.vApplicationGetIdleTaskMemory) refers to main.o(.bss) for IdleTaskTCB
     port.o(.emb_text) refers to task.o(.data) for pxCurrentTCB
     port.o(.emb_text) refers to task.o(i.vTaskSwitchContext) for vTaskSwitchContext
+    port.o(i.SysTick_Handler) refers to task.o(i.xTaskIncrementTick) for xTaskIncrementTick
     port.o(i.pxPortInitialiseStack) refers to port.o(i.prvTaskExitError) for prvTaskExitError
     port.o(i.vPortEnterCritical) refers to port.o(.data) for uxCriticalNesting
     port.o(i.vPortExitCritical) refers to port.o(.data) for uxCriticalNesting
+    port.o(i.xPortStartScheduler) refers to port.o(i.vPortSetupTimerInterrupt) for vPortSetupTimerInterrupt
     port.o(i.xPortStartScheduler) refers to port.o(.emb_text) for prvStartFirstTask
     task.o(i.prvInitialiseNewTask) refers to list.o(i.vListInitialiseItem) for vListInitialiseItem
     task.o(i.prvInitialiseNewTask) refers to port.o(i.pxPortInitialiseStack) for pxPortInitialiseStack
@@ -40,12 +42,15 @@ Section Cross References
     task.o(i.vTaskSwitchContext) refers to task.o(.data) for pxCurrentTCB
     task.o(i.vTaskSwitchContext) refers to main.o(.bss) for IdleTaskTCB
     task.o(i.xTaskCreateStatic) refers to task.o(i.prvInitialiseNewTask) for prvInitialiseNewTask
+    task.o(i.xTaskIncrementTick) refers to task.o(.data) for xTickCount
+    task.o(i.xTaskIncrementTick) refers to task.o(.bss) for pxReadyTasksLists
     startup_armcm3.o(i.Reset_Handler) refers to system_armcm3.o(i.SystemInit) for SystemInit
     startup_armcm3.o(i.Reset_Handler) refers to entry.o(.ARM.Collect$$$$00000000) for __main
     startup_armcm3.o(RESET) refers to startup_armcm3.o(i.Reset_Handler) for Reset_Handler
     startup_armcm3.o(RESET) refers to startup_armcm3.o(i.Default_Handler) for NMI_Handler
     startup_armcm3.o(RESET) refers to startup_armcm3.o(i.HardFault_Handler) for HardFault_Handler
     startup_armcm3.o(RESET) refers to port.o(.emb_text) for SVC_Handler
+    startup_armcm3.o(RESET) refers to port.o(i.SysTick_Handler) for SysTick_Handler
     system_armcm3.o(i.SystemCoreClockUpdate) refers to system_armcm3.o(.data) for SystemCoreClock
     system_armcm3.o(i.SystemInit) refers to startup_armcm3.o(RESET) for __Vectors
     system_armcm3.o(i.SystemInit) refers to system_armcm3.o(.data) for SystemCoreClock
@@ -69,12 +74,12 @@ Section Cross References
 
 Removing Unused input sections from the image.
 
+    Removing main.o(i.delay), (10 bytes).
     Removing port.o(i.vPortEnterCritical), (36 bytes).
     Removing port.o(i.vPortExitCritical), (32 bytes).
     Removing port.o(.data), (4 bytes).
     Removing list.o(i.uxListRemove), (40 bytes).
     Removing list.o(i.vListInsert), (52 bytes).
-    Removing task.o(i.vTaskDelay), (36 bytes).
     Removing startup_armcm3.o(.rev16_text), (4 bytes).
     Removing startup_armcm3.o(.revsh_text), (4 bytes).
     Removing startup_armcm3.o(.rrx_text), (6 bytes).
@@ -83,7 +88,7 @@ Removing Unused input sections from the image.
     Removing system_armcm3.o(.rrx_text), (6 bytes).
     Removing system_armcm3.o(i.SystemCoreClockUpdate), (16 bytes).
 
-13 unused section(s) (total 244 bytes) removed from the image.
+13 unused section(s) (total 218 bytes) removed from the image.
 
 ==============================================================================
 
@@ -94,20 +99,20 @@ Image Symbol Table
     Symbol Name                              Value     Ov Type        Size  Object(Section)
 
     RESET                                    0x00000000   Section      960  startup_armcm3.o(RESET)
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry5.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry7b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry12b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry8b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9b.o ABSOLUTE
+    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry12b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry12a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry11a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10b.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry10a.o ABSOLUTE
-    ../clib/microlib/init/entry.s            0x00000000   Number         0  entry9a.o ABSOLUTE
     ../clib/microlib/init/entry.s            0x00000000   Number         0  entry4.o ABSOLUTE
     ..\\third_lib\\freertos\\portable\\RVDS\\ARM_CM3\\port.c 0x00000000   Number         0  port.o ABSOLUTE
     ..\app\main.c                            0x00000000   Number         0  main.o ABSOLUTE
@@ -138,36 +143,40 @@ Image Symbol Table
     i.Default_Handler                        0x0000048c   Section        0  startup_armcm3.o(i.Default_Handler)
     i.HardFault_Handler                      0x00000490   Section        0  startup_armcm3.o(i.HardFault_Handler)
     i.Reset_Handler                          0x00000494   Section        0  startup_armcm3.o(i.Reset_Handler)
-    i.SystemInit                             0x0000049c   Section        0  system_armcm3.o(i.SystemInit)
-    i.Task1_Entry                            0x000004bc   Section        0  main.o(i.Task1_Entry)
+    i.SysTick_Handler                        0x0000049c   Section        0  port.o(i.SysTick_Handler)
+    i.SystemInit                             0x000004c0   Section        0  system_armcm3.o(i.SystemInit)
+    i.Task1_Entry                            0x000004e0   Section        0  main.o(i.Task1_Entry)
     i.Task2_Entry                            0x00000500   Section        0  main.o(i.Task2_Entry)
-    i.__scatterload_copy                     0x00000544   Section       14  handlers.o(i.__scatterload_copy)
-    i.__scatterload_null                     0x00000552   Section        2  handlers.o(i.__scatterload_null)
-    i.__scatterload_zeroinit                 0x00000554   Section       14  handlers.o(i.__scatterload_zeroinit)
-    i.delay                                  0x00000562   Section        0  main.o(i.delay)
-    i.main                                   0x0000056c   Section        0  main.o(i.main)
-    i.prvIdleTask                            0x000005f4   Section        0  task.o(i.prvIdleTask)
-    prvIdleTask                              0x000005f5   Thumb Code     4  task.o(i.prvIdleTask)
-    i.prvInitialiseNewTask                   0x000005f8   Section        0  task.o(i.prvInitialiseNewTask)
-    prvInitialiseNewTask                     0x000005f9   Thumb Code    96  task.o(i.prvInitialiseNewTask)
-    i.prvInitialiseTaskLists                 0x00000658   Section        0  task.o(i.prvInitialiseTaskLists)
-    i.prvTaskExitError                       0x00000678   Section        0  port.o(i.prvTaskExitError)
-    prvTaskExitError                         0x00000679   Thumb Code     4  port.o(i.prvTaskExitError)
-    i.pxPortInitialiseStack                  0x0000067c   Section        0  port.o(i.pxPortInitialiseStack)
-    i.vApplicationGetIdleTaskMemory          0x000006a0   Section        0  main.o(i.vApplicationGetIdleTaskMemory)
-    i.vListInitialise                        0x000006b8   Section        0  list.o(i.vListInitialise)
-    i.vListInitialiseItem                    0x000006d2   Section        0  list.o(i.vListInitialiseItem)
-    i.vListInsertEnd                         0x000006d8   Section        0  list.o(i.vListInsertEnd)
-    i.vTaskStartScheduler                    0x000006f4   Section        0  task.o(i.vTaskStartScheduler)
-    i.vTaskSwitchContext                     0x00000754   Section        0  task.o(i.vTaskSwitchContext)
-    i.xPortStartScheduler                    0x000007e4   Section        0  port.o(i.xPortStartScheduler)
-    i.xTaskCreateStatic                      0x00000808   Section        0  task.o(i.xTaskCreateStatic)
+    i.__scatterload_copy                     0x00000520   Section       14  handlers.o(i.__scatterload_copy)
+    i.__scatterload_null                     0x0000052e   Section        2  handlers.o(i.__scatterload_null)
+    i.__scatterload_zeroinit                 0x00000530   Section       14  handlers.o(i.__scatterload_zeroinit)
+    i.main                                   0x00000540   Section        0  main.o(i.main)
+    i.prvIdleTask                            0x000005c8   Section        0  task.o(i.prvIdleTask)
+    prvIdleTask                              0x000005c9   Thumb Code     4  task.o(i.prvIdleTask)
+    i.prvInitialiseNewTask                   0x000005cc   Section        0  task.o(i.prvInitialiseNewTask)
+    prvInitialiseNewTask                     0x000005cd   Thumb Code    96  task.o(i.prvInitialiseNewTask)
+    i.prvInitialiseTaskLists                 0x0000062c   Section        0  task.o(i.prvInitialiseTaskLists)
+    i.prvTaskExitError                       0x0000064c   Section        0  port.o(i.prvTaskExitError)
+    prvTaskExitError                         0x0000064d   Thumb Code     4  port.o(i.prvTaskExitError)
+    i.pxPortInitialiseStack                  0x00000650   Section        0  port.o(i.pxPortInitialiseStack)
+    i.vApplicationGetIdleTaskMemory          0x00000674   Section        0  main.o(i.vApplicationGetIdleTaskMemory)
+    i.vListInitialise                        0x0000068c   Section        0  list.o(i.vListInitialise)
+    i.vListInitialiseItem                    0x000006a6   Section        0  list.o(i.vListInitialiseItem)
+    i.vListInsertEnd                         0x000006ac   Section        0  list.o(i.vListInsertEnd)
+    i.vPortSetupTimerInterrupt               0x000006c8   Section        0  port.o(i.vPortSetupTimerInterrupt)
+    i.vTaskDelay                             0x000006d8   Section        0  task.o(i.vTaskDelay)
+    i.vTaskStartScheduler                    0x000006fc   Section        0  task.o(i.vTaskStartScheduler)
+    i.vTaskSwitchContext                     0x0000075c   Section        0  task.o(i.vTaskSwitchContext)
+    i.xPortStartScheduler                    0x000007ec   Section        0  port.o(i.xPortStartScheduler)
+    i.xTaskCreateStatic                      0x00000814   Section        0  task.o(i.xTaskCreateStatic)
+    i.xTaskIncrementTick                     0x0000084c   Section        0  task.o(i.xTaskIncrementTick)
     .data                                    0x20000000   Section       16  main.o(.data)
-    .data                                    0x20000010   Section        8  task.o(.data)
+    .data                                    0x20000010   Section       12  task.o(.data)
     xIdleTaskHandle                          0x20000014   Data           4  task.o(.data)
-    .data                                    0x20000018   Section        4  system_armcm3.o(.data)
-    .bss                                     0x2000001c   Section      816  main.o(.bss)
-    .bss                                     0x2000034c   Section      640  task.o(.bss)
+    xTickCount                               0x20000018   Data           4  task.o(.data)
+    .data                                    0x2000001c   Section        4  system_armcm3.o(.data)
+    .bss                                     0x20000020   Section      816  main.o(.bss)
+    .bss                                     0x20000350   Section      640  task.o(.bss)
 
     Global Symbols
 
@@ -212,43 +221,45 @@ Image Symbol Table
     Interrupt9_Handler                       0x0000048d   Thumb Code     0  startup_armcm3.o(i.Default_Handler)
     MemManage_Handler                        0x0000048d   Thumb Code     0  startup_armcm3.o(i.Default_Handler)
     NMI_Handler                              0x0000048d   Thumb Code     0  startup_armcm3.o(i.Default_Handler)
-    SysTick_Handler                          0x0000048d   Thumb Code     0  startup_armcm3.o(i.Default_Handler)
     UsageFault_Handler                       0x0000048d   Thumb Code     0  startup_armcm3.o(i.Default_Handler)
     HardFault_Handler                        0x00000491   Thumb Code     4  startup_armcm3.o(i.HardFault_Handler)
     Reset_Handler                            0x00000495   Thumb Code     8  startup_armcm3.o(i.Reset_Handler)
-    SystemInit                               0x0000049d   Thumb Code    14  system_armcm3.o(i.SystemInit)
-    Task1_Entry                              0x000004bd   Thumb Code    60  main.o(i.Task1_Entry)
-    Task2_Entry                              0x00000501   Thumb Code    60  main.o(i.Task2_Entry)
-    __scatterload_copy                       0x00000545   Thumb Code    14  handlers.o(i.__scatterload_copy)
-    __scatterload_null                       0x00000553   Thumb Code     2  handlers.o(i.__scatterload_null)
-    __scatterload_zeroinit                   0x00000555   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
-    delay                                    0x00000563   Thumb Code    10  main.o(i.delay)
-    main                                     0x0000056d   Thumb Code    84  main.o(i.main)
-    prvInitialiseTaskLists                   0x00000659   Thumb Code    28  task.o(i.prvInitialiseTaskLists)
-    pxPortInitialiseStack                    0x0000067d   Thumb Code    30  port.o(i.pxPortInitialiseStack)
-    vApplicationGetIdleTaskMemory            0x000006a1   Thumb Code    14  main.o(i.vApplicationGetIdleTaskMemory)
-    vListInitialise                          0x000006b9   Thumb Code    26  list.o(i.vListInitialise)
-    vListInitialiseItem                      0x000006d3   Thumb Code     6  list.o(i.vListInitialiseItem)
-    vListInsertEnd                           0x000006d9   Thumb Code    28  list.o(i.vListInsertEnd)
-    vTaskStartScheduler                      0x000006f5   Thumb Code    68  task.o(i.vTaskStartScheduler)
-    vTaskSwitchContext                       0x00000755   Thumb Code   128  task.o(i.vTaskSwitchContext)
-    xPortStartScheduler                      0x000007e5   Thumb Code    32  port.o(i.xPortStartScheduler)
-    xTaskCreateStatic                        0x00000809   Thumb Code    54  task.o(i.xTaskCreateStatic)
-    Region$$Table$$Base                      0x00000840   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x00000860   Number         0  anon$$obj.o(Region$$Table)
+    SysTick_Handler                          0x0000049d   Thumb Code    36  port.o(i.SysTick_Handler)
+    SystemInit                               0x000004c1   Thumb Code    14  system_armcm3.o(i.SystemInit)
+    Task1_Entry                              0x000004e1   Thumb Code    28  main.o(i.Task1_Entry)
+    Task2_Entry                              0x00000501   Thumb Code    28  main.o(i.Task2_Entry)
+    __scatterload_copy                       0x00000521   Thumb Code    14  handlers.o(i.__scatterload_copy)
+    __scatterload_null                       0x0000052f   Thumb Code     2  handlers.o(i.__scatterload_null)
+    __scatterload_zeroinit                   0x00000531   Thumb Code    14  handlers.o(i.__scatterload_zeroinit)
+    main                                     0x00000541   Thumb Code    84  main.o(i.main)
+    prvInitialiseTaskLists                   0x0000062d   Thumb Code    28  task.o(i.prvInitialiseTaskLists)
+    pxPortInitialiseStack                    0x00000651   Thumb Code    30  port.o(i.pxPortInitialiseStack)
+    vApplicationGetIdleTaskMemory            0x00000675   Thumb Code    14  main.o(i.vApplicationGetIdleTaskMemory)
+    vListInitialise                          0x0000068d   Thumb Code    26  list.o(i.vListInitialise)
+    vListInitialiseItem                      0x000006a7   Thumb Code     6  list.o(i.vListInitialiseItem)
+    vListInsertEnd                           0x000006ad   Thumb Code    28  list.o(i.vListInsertEnd)
+    vPortSetupTimerInterrupt                 0x000006c9   Thumb Code    16  port.o(i.vPortSetupTimerInterrupt)
+    vTaskDelay                               0x000006d9   Thumb Code    26  task.o(i.vTaskDelay)
+    vTaskStartScheduler                      0x000006fd   Thumb Code    68  task.o(i.vTaskStartScheduler)
+    vTaskSwitchContext                       0x0000075d   Thumb Code   128  task.o(i.vTaskSwitchContext)
+    xPortStartScheduler                      0x000007ed   Thumb Code    36  port.o(i.xPortStartScheduler)
+    xTaskCreateStatic                        0x00000815   Thumb Code    54  task.o(i.xTaskCreateStatic)
+    xTaskIncrementTick                       0x0000084d   Thumb Code    68  task.o(i.xTaskIncrementTick)
+    Region$$Table$$Base                      0x0000089c   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x000008bc   Number         0  anon$$obj.o(Region$$Table)
     flag1                                    0x20000000   Data           4  main.o(.data)
     flag2                                    0x20000004   Data           4  main.o(.data)
     Task1_Handle                             0x20000008   Data           4  main.o(.data)
     Task2_Handle                             0x2000000c   Data           4  main.o(.data)
     pxCurrentTCB                             0x20000010   Data           4  task.o(.data)
-    SystemCoreClock                          0x20000018   Data           4  system_armcm3.o(.data)
-    Task1Stack                               0x2000001c   Data          80  main.o(.bss)
-    Task1TCB                                 0x2000006c   Data          48  main.o(.bss)
-    Task2Stack                               0x2000009c   Data          80  main.o(.bss)
-    Task2TCB                                 0x200000ec   Data          48  main.o(.bss)
-    IdleTaskStack                            0x2000011c   Data         512  main.o(.bss)
-    IdleTaskTCB                              0x2000031c   Data          48  main.o(.bss)
-    pxReadyTasksLists                        0x2000034c   Data         640  task.o(.bss)
+    SystemCoreClock                          0x2000001c   Data           4  system_armcm3.o(.data)
+    Task1Stack                               0x20000020   Data          80  main.o(.bss)
+    Task1TCB                                 0x20000070   Data          48  main.o(.bss)
+    Task2Stack                               0x200000a0   Data          80  main.o(.bss)
+    Task2TCB                                 0x200000f0   Data          48  main.o(.bss)
+    IdleTaskStack                            0x20000120   Data         512  main.o(.bss)
+    IdleTaskTCB                              0x20000320   Data          48  main.o(.bss)
+    pxReadyTasksLists                        0x20000350   Data         640  task.o(.bss)
     Image$$ARM_LIB_STACK$$ZI$$Limit          0x20040000   Number         0  anon$$obj.o ABSOLUTE
 
 
@@ -259,72 +270,76 @@ Memory Map of the image
 
   Image Entry point : 0x000003c1
 
-  Load Region LR_ROM (Base: 0x00000000, Size: 0x0000087c, Max: 0x00080000, ABSOLUTE)
+  Load Region LR_ROM (Base: 0x00000000, Size: 0x000008dc, Max: 0x00080000, ABSOLUTE)
 
-    Execution Region ER_ROM (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00000860, Max: 0x00080000, ABSOLUTE)
+    Execution Region ER_ROM (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x000008bc, Max: 0x00080000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x00000000   0x00000000   0x000003c0   Data   RO          226    RESET               startup_armcm3.o
-    0x000003c0   0x000003c0   0x00000000   Code   RO          320  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
-    0x000003c0   0x000003c0   0x00000004   Code   RO          323    .ARM.Collect$$$$00000003  mc_w.l(entry4.o)
-    0x000003c4   0x000003c4   0x00000004   Code   RO          326    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
-    0x000003c8   0x000003c8   0x00000000   Code   RO          328    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
-    0x000003c8   0x000003c8   0x00000000   Code   RO          330    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
-    0x000003c8   0x000003c8   0x00000008   Code   RO          331    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
-    0x000003d0   0x000003d0   0x00000004   Code   RO          338    .ARM.Collect$$$$0000000E  mc_w.l(entry12b.o)
-    0x000003d4   0x000003d4   0x00000000   Code   RO          333    .ARM.Collect$$$$0000000F  mc_w.l(entry10a.o)
-    0x000003d4   0x000003d4   0x00000000   Code   RO          335    .ARM.Collect$$$$00000011  mc_w.l(entry11a.o)
-    0x000003d4   0x000003d4   0x00000004   Code   RO          324    .ARM.Collect$$$$00002714  mc_w.l(entry4.o)
+    0x00000000   0x00000000   0x000003c0   Data   RO          244    RESET               startup_armcm3.o
+    0x000003c0   0x000003c0   0x00000000   Code   RO          338  * .ARM.Collect$$$$00000000  mc_w.l(entry.o)
+    0x000003c0   0x000003c0   0x00000004   Code   RO          341    .ARM.Collect$$$$00000003  mc_w.l(entry4.o)
+    0x000003c4   0x000003c4   0x00000004   Code   RO          344    .ARM.Collect$$$$00000004  mc_w.l(entry5.o)
+    0x000003c8   0x000003c8   0x00000000   Code   RO          346    .ARM.Collect$$$$00000008  mc_w.l(entry7b.o)
+    0x000003c8   0x000003c8   0x00000000   Code   RO          348    .ARM.Collect$$$$0000000A  mc_w.l(entry8b.o)
+    0x000003c8   0x000003c8   0x00000008   Code   RO          349    .ARM.Collect$$$$0000000B  mc_w.l(entry9a.o)
+    0x000003d0   0x000003d0   0x00000004   Code   RO          356    .ARM.Collect$$$$0000000E  mc_w.l(entry12b.o)
+    0x000003d4   0x000003d4   0x00000000   Code   RO          351    .ARM.Collect$$$$0000000F  mc_w.l(entry10a.o)
+    0x000003d4   0x000003d4   0x00000000   Code   RO          353    .ARM.Collect$$$$00000011  mc_w.l(entry11a.o)
+    0x000003d4   0x000003d4   0x00000004   Code   RO          342    .ARM.Collect$$$$00002714  mc_w.l(entry4.o)
     0x000003d8   0x000003d8   0x00000090   Code   RO           73    .emb_text           port.o
-    0x00000468   0x00000468   0x00000024   Code   RO          339    .text               mc_w.l(init.o)
-    0x0000048c   0x0000048c   0x00000004   Code   RO          223    i.Default_Handler   startup_armcm3.o
-    0x00000490   0x00000490   0x00000004   Code   RO          224    i.HardFault_Handler  startup_armcm3.o
-    0x00000494   0x00000494   0x00000008   Code   RO          225    i.Reset_Handler     startup_armcm3.o
-    0x0000049c   0x0000049c   0x00000020   Code   RO          287    i.SystemInit        system_armcm3.o
-    0x000004bc   0x000004bc   0x00000044   Code   RO            3    i.Task1_Entry       main.o
-    0x00000500   0x00000500   0x00000044   Code   RO            4    i.Task2_Entry       main.o
-    0x00000544   0x00000544   0x0000000e   Code   RO          343    i.__scatterload_copy  mc_w.l(handlers.o)
-    0x00000552   0x00000552   0x00000002   Code   RO          344    i.__scatterload_null  mc_w.l(handlers.o)
-    0x00000554   0x00000554   0x0000000e   Code   RO          345    i.__scatterload_zeroinit  mc_w.l(handlers.o)
-    0x00000562   0x00000562   0x0000000a   Code   RO            5    i.delay             main.o
-    0x0000056c   0x0000056c   0x00000088   Code   RO            6    i.main              main.o
-    0x000005f4   0x000005f4   0x00000004   Code   RO          166    i.prvIdleTask       task.o
-    0x000005f8   0x000005f8   0x00000060   Code   RO          167    i.prvInitialiseNewTask  task.o
-    0x00000658   0x00000658   0x00000020   Code   RO          168    i.prvInitialiseTaskLists  task.o
-    0x00000678   0x00000678   0x00000004   Code   RO           74    i.prvTaskExitError  port.o
-    0x0000067c   0x0000067c   0x00000024   Code   RO           75    i.pxPortInitialiseStack  port.o
-    0x000006a0   0x000006a0   0x00000018   Code   RO            7    i.vApplicationGetIdleTaskMemory  main.o
-    0x000006b8   0x000006b8   0x0000001a   Code   RO          125    i.vListInitialise   list.o
-    0x000006d2   0x000006d2   0x00000006   Code   RO          126    i.vListInitialiseItem  list.o
-    0x000006d8   0x000006d8   0x0000001c   Code   RO          128    i.vListInsertEnd    list.o
-    0x000006f4   0x000006f4   0x00000060   Code   RO          170    i.vTaskStartScheduler  task.o
-    0x00000754   0x00000754   0x00000090   Code   RO          171    i.vTaskSwitchContext  task.o
-    0x000007e4   0x000007e4   0x00000024   Code   RO           78    i.xPortStartScheduler  port.o
-    0x00000808   0x00000808   0x00000036   Code   RO          172    i.xTaskCreateStatic  task.o
-    0x0000083e   0x0000083e   0x00000002   PAD
-    0x00000840   0x00000840   0x00000020   Data   RO          341    Region$$Table       anon$$obj.o
+    0x00000468   0x00000468   0x00000024   Code   RO          357    .text               mc_w.l(init.o)
+    0x0000048c   0x0000048c   0x00000004   Code   RO          241    i.Default_Handler   startup_armcm3.o
+    0x00000490   0x00000490   0x00000004   Code   RO          242    i.HardFault_Handler  startup_armcm3.o
+    0x00000494   0x00000494   0x00000008   Code   RO          243    i.Reset_Handler     startup_armcm3.o
+    0x0000049c   0x0000049c   0x00000024   Code   RO           74    i.SysTick_Handler   port.o
+    0x000004c0   0x000004c0   0x00000020   Code   RO          305    i.SystemInit        system_armcm3.o
+    0x000004e0   0x000004e0   0x00000020   Code   RO            3    i.Task1_Entry       main.o
+    0x00000500   0x00000500   0x00000020   Code   RO            4    i.Task2_Entry       main.o
+    0x00000520   0x00000520   0x0000000e   Code   RO          361    i.__scatterload_copy  mc_w.l(handlers.o)
+    0x0000052e   0x0000052e   0x00000002   Code   RO          362    i.__scatterload_null  mc_w.l(handlers.o)
+    0x00000530   0x00000530   0x0000000e   Code   RO          363    i.__scatterload_zeroinit  mc_w.l(handlers.o)
+    0x0000053e   0x0000053e   0x00000002   PAD
+    0x00000540   0x00000540   0x00000088   Code   RO            6    i.main              main.o
+    0x000005c8   0x000005c8   0x00000004   Code   RO          178    i.prvIdleTask       task.o
+    0x000005cc   0x000005cc   0x00000060   Code   RO          179    i.prvInitialiseNewTask  task.o
+    0x0000062c   0x0000062c   0x00000020   Code   RO          180    i.prvInitialiseTaskLists  task.o
+    0x0000064c   0x0000064c   0x00000004   Code   RO           75    i.prvTaskExitError  port.o
+    0x00000650   0x00000650   0x00000024   Code   RO           76    i.pxPortInitialiseStack  port.o
+    0x00000674   0x00000674   0x00000018   Code   RO            7    i.vApplicationGetIdleTaskMemory  main.o
+    0x0000068c   0x0000068c   0x0000001a   Code   RO          137    i.vListInitialise   list.o
+    0x000006a6   0x000006a6   0x00000006   Code   RO          138    i.vListInitialiseItem  list.o
+    0x000006ac   0x000006ac   0x0000001c   Code   RO          140    i.vListInsertEnd    list.o
+    0x000006c8   0x000006c8   0x00000010   Code   RO           79    i.vPortSetupTimerInterrupt  port.o
+    0x000006d8   0x000006d8   0x00000024   Code   RO          181    i.vTaskDelay        task.o
+    0x000006fc   0x000006fc   0x00000060   Code   RO          182    i.vTaskStartScheduler  task.o
+    0x0000075c   0x0000075c   0x00000090   Code   RO          183    i.vTaskSwitchContext  task.o
+    0x000007ec   0x000007ec   0x00000028   Code   RO           80    i.xPortStartScheduler  port.o
+    0x00000814   0x00000814   0x00000036   Code   RO          184    i.xTaskCreateStatic  task.o
+    0x0000084a   0x0000084a   0x00000002   PAD
+    0x0000084c   0x0000084c   0x00000050   Code   RO          185    i.xTaskIncrementTick  task.o
+    0x0000089c   0x0000089c   0x00000020   Data   RO          359    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_RAM (Exec base: 0x20000000, Load base: 0x00000860, Size: 0x000005cc, Max: 0x0003f200, ABSOLUTE)
+    Execution Region RW_RAM (Exec base: 0x20000000, Load base: 0x000008bc, Size: 0x000005d0, Max: 0x0003f200, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x00000860   0x00000010   Data   RW            9    .data               main.o
-    0x20000010   0x00000870   0x00000008   Data   RW          174    .data               task.o
-    0x20000018   0x00000878   0x00000004   Data   RW          288    .data               system_armcm3.o
-    0x2000001c        -       0x00000330   Zero   RW            8    .bss                main.o
-    0x2000034c        -       0x00000280   Zero   RW          173    .bss                task.o
+    0x20000000   0x000008bc   0x00000010   Data   RW            9    .data               main.o
+    0x20000010   0x000008cc   0x0000000c   Data   RW          187    .data               task.o
+    0x2000001c   0x000008d8   0x00000004   Data   RW          306    .data               system_armcm3.o
+    0x20000020        -       0x00000330   Zero   RW            8    .bss                main.o
+    0x20000350        -       0x00000280   Zero   RW          186    .bss                task.o
 
 
-    Execution Region ARM_LIB_HEAP (Exec base: 0x200005d0, Load base: 0x0000087c, Size: 0x00000c00, Max: 0x00000c00, ABSOLUTE)
+    Execution Region ARM_LIB_HEAP (Exec base: 0x200005d0, Load base: 0x000008dc, Size: 0x00000c00, Max: 0x00000c00, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
     0x200005d0        -       0x00000c00   Zero   RW            1    ARM_LIB_HEAP.bss    anon$$obj.o
 
 
-    Execution Region ARM_LIB_STACK (Exec base: 0x2003fe00, Load base: 0x0000087c, Size: 0x00000200, Max: 0x00000200, ABSOLUTE)
+    Execution Region ARM_LIB_STACK (Exec base: 0x2003fe00, Load base: 0x000008dc, Size: 0x00000200, Max: 0x00000200, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -339,14 +354,14 @@ Image component sizes
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
         60          0          0          0          0       2201   list.o
-       306         78          0         16        816      12929   main.o
-       220         22          0          0          0       4790   port.o
-        16          0        960          0          0       2662   startup_armcm3.o
-        32         18          0          4          0        727   system_armcm3.o
-       426         48          0          8        640       5213   task.o
+       224         70          0         16        816      12525   main.o
+       276         22          0          0          0       6351   port.o
+        16          0        960          0          0       2762   startup_armcm3.o
+        32         18          0          4          0        767   system_armcm3.o
+       542         70          0         12        640       6403   task.o
 
     ----------------------------------------------------------------------
-      1062        166        992         28       5040      28522   Object Totals
+      1152        180        992         32       5040      31009   Object Totals
          0          0         32          0       3584          0   (incl. Generated)
          2          0          0          0          0          0   (incl. Padding)
 
@@ -367,8 +382,8 @@ Image component sizes
         36          8          0          0          0         68   init.o
 
     ----------------------------------------------------------------------
-        90         16          0          0          0         68   Library Totals
-         0          0          0          0          0          0   (incl. Padding)
+        92         16          0          0          0         68   Library Totals
+         2          0          0          0          0          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -377,7 +392,7 @@ Image component sizes
         90         16          0          0          0         68   mc_w.l
 
     ----------------------------------------------------------------------
-        90         16          0          0          0         68   Library Totals
+        92         16          0          0          0         68   Library Totals
 
     ----------------------------------------------------------------------
 
@@ -386,15 +401,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      1152        182        992         28       5040      27858   Grand Totals
-      1152        182        992         28       5040      27858   ELF Image Totals
-      1152        182        992         28          0          0   ROM Totals
+      1244        196        992         32       5040      30189   Grand Totals
+      1244        196        992         32       5040      30189   ELF Image Totals
+      1244        196        992         32          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                 2144 (   2.09kB)
-    Total RW  Size (RW Data + ZI Data)              5068 (   4.95kB)
-    Total ROM Size (Code + RO Data + RW Data)       2172 (   2.12kB)
+    Total RO  Size (Code + RO Data)                 2236 (   2.18kB)
+    Total RW  Size (RW Data + ZI Data)              5072 (   4.95kB)
+    Total ROM Size (Code + RO Data + RW Data)       2268 (   2.21kB)
 
 ==============================================================================
 

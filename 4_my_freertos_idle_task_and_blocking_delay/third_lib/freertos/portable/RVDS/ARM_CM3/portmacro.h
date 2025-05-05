@@ -110,5 +110,13 @@ static portFORCE_INLINE void vPortSetBASEPRI(uint32_t ulBASEPRI)
     }
 }
 
+/* 开中断，相当于vPortSetBASEPRI(0) */
+static portFORCE_INLINE void vPortClearBASEPRIFromISR( void )
+{
+	__asm
+	{
+		msr basepri, #0
+	}
+}
 
 #endif

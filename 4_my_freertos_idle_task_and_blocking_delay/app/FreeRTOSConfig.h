@@ -1,6 +1,12 @@
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
 
+/* CPU内核时钟频率 */
+#define configCPU_CLOCK_HZ  ((unsigned long)25000000)
+
+/* 系统节拍中断的频率 */
+#define configTICK_RATE_HZ  ((TickType_t)1000)
+
 /* 可使用的最大优先级 */
 #define configMAX_PRIORITIES    (32)
 

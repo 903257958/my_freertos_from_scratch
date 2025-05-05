@@ -13,6 +13,26 @@
 /* 设置SysTick异常的优先级，将优先级值对齐到SCB_SHPR3寄存器的Bits 31:24 */
 #define portNVIC_SYSTICK_PRI    (((uint32_t)configKERNEL_INTERRUPT_PRIORITY) << 24UL)
 
+/* SysTick控制寄存器 */
+#define portNVIC_SYSTICK_CTRL_REG   (*((volatile uint32_t *)0xe000e010))
+
+/* SysTick重装载值寄存器 */
+#define portNVIC_SYSTICK_LOAD_REG   (*((volatile uint32_t *)0xe000e014))
+
+/* SysTick时钟源配置 */
+#ifndef configSYSTICK_CLOCK_HZ
+    #define configSYSTICK_CLOCK_HZ  configCPU_CLOCK_HZ
+    #define portNVIC_SYSTICK_CLK_BIT (1UL << 2UL)   /* 选择内核时钟 */
+#else
+    #define portNVIC_SYSTICK_CLK_BIT (0)    /* 选择外部参考时钟 */
+#endif
+
+/* 对应SYST_CSR的TICKINT位（第1位），置1时启用SysTick中断 */
+#define portNVIC_SYSTICK_INT_BIT    (1UL << 1UL)
+
+/* 对应SYST_CSR的ENABLE位（第0位） ，置1时启动SysTick定时器 */
+#define portNVIC_SYSTICK_ENABLE_BIT (1UL << 0UL)
+
 /* 设置初始化栈用的常量 */
 #define portINITIAL_XPSR    (0x01000000)
 
@@ -24,8 +44,9 @@ static UBaseType_t uxCriticalNesting = 0xaaaaaaaa;
 
 /* 函数声明 */
 void prvStartFirstTask(void);
-void vPortSVCHandler(void );
+void vPortSVCHandler(void);
 void xPortPendSVHandler(void);
+void vPortSetupTimerInterrupt(void);
 
 /* 捕获任务异常退出 */
 static void prvTaskExitError(void)
@@ -68,6 +89,9 @@ BaseType_t xPortStartScheduler(void)
     /* 配置PendSV和SysTick的中断优先级为最低 */
     portNVIC_SYSPRI2_REG |= portNVIC_PENDSV_PRI;
     portNVIC_SYSPRI2_REG |= portNVIC_SYSTICK_PRI;
+
+    /* 初始化SysTick */
+    vPortSetupTimerInterrupt();
 
     /* 启动第一个任务不再返回 */
     prvStartFirstTask();
@@ -185,4 +209,27 @@ void vPortExitCritical(void)
     {
         portENABLE_INTERRUPTS();
     }
+}
+
+/* SysTick初始化函数 */
+void vPortSetupTimerInterrupt(void)
+{
+    /* 设置重装载寄存器的值，决定SysTick的中断周期 */
+    portNVIC_SYSTICK_LOAD_REG = (configSYSTICK_CLOCK_HZ / configTICK_RATE_HZ) - 1UL;
+
+    /* 设置系统定时器时钟=内核时钟，使能SysTick定时器中断，使能SysTick定时器 */
+    portNVIC_SYSTICK_CTRL_REG = (portNVIC_SYSTICK_CLK_BIT | portNVIC_SYSTICK_INT_BIT | portNVIC_SYSTICK_ENABLE_BIT);
+}
+
+/* SysTick中断服务函数 */
+void xPortSysTickHandler(void)
+{
+    /* 关中断 */
+    vPortRaiseBASEPRI();
+
+    /* 更新系统时基 */
+    xTaskIncrementTick();
+
+    /* 开中断 */
+    vPortClearBASEPRIFromISR();
 }

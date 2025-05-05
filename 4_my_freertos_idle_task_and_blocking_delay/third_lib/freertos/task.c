@@ -15,6 +15,9 @@ List_t pxReadyTasksLists[configMAX_PRIORITIES];
 /* 空闲任务句柄 */
 static TaskHandle_t xIdleTaskHandle = NULL;
 
+/* 系统时基计数器 */
+static volatile TickType_t xTickCount = (TickType_t)0U;
+
 /* 函数声明 */
 static portTASK_FUNCTION(prvIdleTask, pvParameters);
 
@@ -230,4 +233,28 @@ void vTaskDelay(const TickType_t xTickToDelay)
     pxTCB->xTicksToDelay = xTickToDelay;    /* 设置延时时间 */
 
     taskYIELD();    /* 任务切换 */
+}
+
+/* 更新系统时基 */
+void xTaskIncrementTick(void)
+{
+    TCB_t *pxTCB = NULL;
+    BaseType_t i = 0;
+
+    /* 更新系统时基计数器xTickCount（在task.c中定义的全局变量） */
+    const TickType_t xConstTickCount = xTickCount + 1;
+    xTickCount = xConstTickCount;
+
+    /* 扫描就序列表中所有任务的xTicksToDelay，不为0则减1 */
+    for (i = 0; i < configMAX_PRIORITIES; i++)
+    {
+        pxTCB = (TCB_t *)listGET_OWNER_OF_HEAD_ENTRY((&pxReadyTasksLists[i]));
+        if (pxTCB->xTicksToDelay > 0)
+        {
+            pxTCB->xTicksToDelay--;
+        }
+    }
+
+    /* 任务切换 */
+    portYIELD();
 }

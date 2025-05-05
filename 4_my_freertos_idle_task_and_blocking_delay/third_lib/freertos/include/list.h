@@ -71,7 +71,7 @@ typedef struct xLIST
 #define listCURRENT_LIST_LENGTH(pxList) \
         ((pxList)->uxNumberOfItems)
 
-/* 获取链表第一个节点的Owner，即TCB */
+/* 遍历链表，返回当前pxIndex指向的下一个节点的所有者，并更新pxIndex指针 */
 #define listGET_OWNER_OF_NEXT_ENTRY(pxTCB, pxList) { \
     List_t *const pxConstList = (pxList); \
     (pxConstList)->pxIndex = (pxConstList)->pxIndex->pxNext; \
@@ -81,6 +81,9 @@ typedef struct xLIST
     } \
     (pxTCB) = (pxConstList)->pxIndex->pvOwner; \
 }
+
+/* 获取链表中第一个有效节点的所有者 */
+#define listGET_OWNER_OF_HEAD_ENTRY(pxList)  ((&((pxList)->xListEnd))->pxNext->pvOwner)
 
 /* 函数声明 */
 void vListInitialiseItem(ListItem_t *const pxItem);
