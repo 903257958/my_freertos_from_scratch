@@ -1,0 +1,10 @@
+.\objects\list.o: ..\third_lib\freertos\list.c
+.\objects\list.o: D:\Keil5\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\list.o: ..\third_lib\freertos\include\FreeRTOS.h
+.\objects\list.o: ..\app\FreeRTOSConfig.h
+.\objects\list.o: ..\third_lib\freertos\include\projdefs.h
+.\objects\list.o: ..\third_lib\freertos\include\portable.h
+.\objects\list.o: ..\third_lib\freertos\portable\RVDS\ARM_CM3\portmacro.h
+.\objects\list.o: D:\Keil5\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\list.o: D:\Keil5\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\list.o: ..\third_lib\freertos\include\list.h
